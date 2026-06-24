@@ -148,9 +148,11 @@
             background: none;
             border: none;
             cursor: pointer;
-            width: 28px;
-            height: 20px;
+            width: 32px;
+            height: 24px;
             position: relative;
+            z-index: 101;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .mobile-menu-btn span {
@@ -160,12 +162,28 @@
             background: var(--dark);
             position: absolute;
             left: 0;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            border-radius: 2px;
         }
 
         .mobile-menu-btn span:nth-child(1) { top: 0; }
-        .mobile-menu-btn span:nth-child(2) { top: 9px; }
-        .mobile-menu-btn span:nth-child(3) { top: 18px; }
+        .mobile-menu-btn span:nth-child(2) { top: 11px; }
+        .mobile-menu-btn span:nth-child(3) { top: 22px; }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            top: 11px;
+            transform: rotate(45deg);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            top: 11px;
+            transform: rotate(-45deg);
+        }
 
         /* HERO */
         .hero {
@@ -605,28 +623,47 @@
 
         /* MOBILE NAV */
         .mobile-nav {
-            display: none;
             position: fixed;
             inset: 0;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 99;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 32px;
+            gap: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
         .mobile-nav.active {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
 
         .mobile-nav a {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
+            font-size: 32px;
             text-decoration: none;
             color: var(--dark);
-            transition: color 0.3s;
+            padding: 16px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s;
         }
+
+        .mobile-nav.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-nav.active a:nth-child(2) { transition-delay: 0.1s; }
+        .mobile-nav.active a:nth-child(3) { transition-delay: 0.15s; }
+        .mobile-nav.active a:nth-child(4) { transition-delay: 0.2s; }
+        .mobile-nav.active a:nth-child(5) { transition-delay: 0.25s; }
+        .mobile-nav.active a:nth-child(6) { transition-delay: 0.3s; }
 
         .mobile-nav a:hover {
             color: var(--pink);
@@ -634,13 +671,32 @@
 
         .mobile-nav-close {
             position: absolute;
-            top: 24px;
-            right: 24px;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
             background: none;
             border: none;
-            font-size: 28px;
             cursor: pointer;
             color: var(--dark);
+            opacity: 0;
+            transition: opacity 0.3s ease 0.35s, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-nav.active .mobile-nav-close {
+            opacity: 1;
+        }
+
+        .mobile-nav-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .mobile-nav-close svg {
+            width: 24px;
+            height: 24px;
         }
 
         /* SCROLL TO TOP */
@@ -722,82 +778,6 @@
             font-weight: 300;
             color: var(--gray);
             line-height: 1.6;
-        }
-
-        /* MASTER */
-        .master {
-            background: var(--cream);
-        }
-
-        .master-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .master-photo {
-            width: 100%;
-            aspect-ratio: 3/4;
-            border-radius: 24px;
-            background: linear-gradient(135deg, var(--pink-soft) 0%, #fce7f3 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .master-photo-placeholder {
-            text-align: center;
-            color: var(--pink);
-        }
-
-        .master-photo-placeholder .icon {
-            font-size: 80px;
-            opacity: 0.5;
-        }
-
-        .master-info h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(32px, 5vw, 44px);
-            font-weight: 300;
-            margin-bottom: 8px;
-        }
-
-        .master-info .master-name {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--pink);
-            margin-bottom: 20px;
-        }
-
-        .master-info p {
-            font-size: 15px;
-            font-weight: 300;
-            color: var(--gray);
-            line-height: 1.7;
-            margin-bottom: 28px;
-        }
-
-        .master-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .master-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: #FFF0F6;
-            border: 1px solid rgba(233, 30, 140, 0.15);
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--pink);
         }
 
         /* NUMBERS */
@@ -924,16 +904,6 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .master-inner {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .master-photo {
-                aspect-ratio: 4/3;
-                max-height: 320px;
-            }
-
             .numbers-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 40px;
@@ -995,13 +965,8 @@
             }
 
             /* MOBILE NAV — full screen */
-            .mobile-nav {
-                gap: 20px;
-                padding: 24px;
-            }
-
             .mobile-nav a {
-                font-size: 24px;
+                font-size: 28px;
                 font-family: 'Montserrat', sans-serif;
                 font-weight: 400;
             }
@@ -1009,7 +974,6 @@
             .mobile-nav-close {
                 top: 16px;
                 right: 16px;
-                font-size: 32px;
             }
 
             /* HERO */
@@ -1109,50 +1073,6 @@
             .why-card p {
                 font-size: 12px;
                 line-height: 1.5;
-            }
-
-            /* MASTER */
-            .master {
-                padding: 40px 16px;
-            }
-
-            .master-inner {
-                gap: 28px;
-            }
-
-            .master-photo {
-                aspect-ratio: auto;
-                height: 250px;
-                border-radius: 16px;
-            }
-
-            .master-photo-placeholder .icon {
-                font-size: 60px;
-            }
-
-            .master-info h2 {
-                font-size: 24px;
-                margin-bottom: 4px;
-            }
-
-            .master-info .master-name {
-                font-size: 26px;
-                margin-bottom: 16px;
-            }
-
-            .master-info p {
-                font-size: 14px;
-                line-height: 1.6;
-                margin-bottom: 20px;
-            }
-
-            .master-badges {
-                gap: 8px;
-            }
-
-            .master-badge {
-                font-size: 12px;
-                padding: 6px 12px;
             }
 
             /* NUMBERS */
@@ -1292,7 +1212,12 @@
 
     <!-- MOBILE NAV -->
     <div class="mobile-nav" id="mobileNav">
-        <button class="mobile-nav-close" onclick="toggleMobileNav()">&times;</button>
+        <button class="mobile-nav-close" onclick="toggleMobileNav()" aria-label="Закрыть">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
         <a href="#services" onclick="toggleMobileNav()">Услуги</a>
         <a href="#gallery" onclick="toggleMobileNav()">Галерея</a>
         <a href="#reviews" onclick="toggleMobileNav()">Отзывы</a>
@@ -1401,27 +1326,6 @@
                 <div class="why-card-icon">💗</div>
                 <h3>Уютная атмосфера</h3>
                 <p>Кофе, чай и приятная музыка — пока мы заботимся о ваших руках</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- MASTER -->
-    <section class="master" id="master">
-        <div class="master-inner">
-            <div class="master-photo fade-in">
-                <div class="master-photo-placeholder">
-                    <div class="icon">👩‍🦰</div>
-                </div>
-            </div>
-            <div class="master-info fade-in">
-                <h2>Ваш мастер</h2>
-                <div class="master-name">Ирина</div>
-                <p>Сертифицированный мастер маникюра и педикюра с опытом более 5 лет. Специализируюсь на nail-арте, наращивании и уходовых процедурах. Работаю только с проверенными материалами и слежу за каждой деталью.</p>
-                <div class="master-badges">
-                    <span class="master-badge">5+ лет опыта</span>
-                    <span class="master-badge">Сертифицированный мастер</span>
-                    <span class="master-badge">500+ клиентов</span>
-                </div>
             </div>
         </div>
     </section>
@@ -1598,6 +1502,7 @@
         // Mobile nav
         function toggleMobileNav() {
             document.getElementById('mobileNav').classList.toggle('active');
+            document.querySelector('.mobile-menu-btn').classList.toggle('active');
         }
 
         // Fade-in on scroll
